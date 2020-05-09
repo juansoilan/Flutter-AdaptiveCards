@@ -6,12 +6,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_adaptive_cards/src/action_handler.dart';
+import 'package:flutter_adaptive_cards/src/elements/base.dart';
 import 'package:flutter_adaptive_cards/src/registry.dart';
 import 'package:flutter_adaptive_cards/src/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
-import 'elements/base.dart';
 
 abstract class AdaptiveCardContentProvider {
   AdaptiveCardContentProvider({@required this.hostConfigPath});

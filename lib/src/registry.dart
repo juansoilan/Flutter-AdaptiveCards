@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_cards/src/elements/actions.dart';
+import 'package:flutter_adaptive_cards/src/elements/base.dart';
 import 'package:flutter_adaptive_cards/src/elements/basics.dart';
 import 'package:flutter_adaptive_cards/src/elements/input.dart';
 import 'package:flutter_adaptive_cards/src/flutter_adaptive_cards.dart';
-
-import 'elements/base.dart';
 
 typedef ElementCreator = Widget Function(Map<String, dynamic> map);
 
@@ -55,7 +54,9 @@ class CardRegistry {
   }
 
   GenericAction getGenericAction(
-      Map<String, dynamic> map, RawAdaptiveCardState state) {
+    Map<String, dynamic> map,
+    RawAdaptiveCardState state,
+  ) {
     String stringType = map["type"];
 
     switch (stringType) {

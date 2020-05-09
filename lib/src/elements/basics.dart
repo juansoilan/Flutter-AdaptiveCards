@@ -2,13 +2,12 @@ import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_cards/flutter_adaptive_cards.dart';
 import 'package:flutter_adaptive_cards/src/elements/actions.dart';
+import 'package:flutter_adaptive_cards/src/elements/additional.dart';
+import 'package:flutter_adaptive_cards/src/elements/base.dart';
 import 'package:flutter_adaptive_cards/src/utils.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-
-import 'additional.dart';
-import 'base.dart';
 
 class AdaptiveCardElement extends StatefulWidget
     with AdaptiveElementWidgetMixin {
@@ -72,7 +71,7 @@ class AdaptiveCardElementState extends State<AdaptiveCardElement>
           .toList());
       cards = List<Widget>.from(showCardActions
           .map((action) =>
-          widgetState.cardRegistry.getElement(action.adaptiveMap["card"]))
+              widgetState.cardRegistry.getElement(action.adaptiveMap["card"]))
           .toList());
     }
   }
@@ -85,11 +84,10 @@ class AdaptiveCardElementState extends State<AdaptiveCardElement>
 
     // Adds the actions
     List<Widget> actionWidgets = allActions
-        .map((action) =>
-        Padding(
-          padding: EdgeInsets.only(right: 8),
-          child: action,
-        ))
+        .map((action) => Padding(
+              padding: EdgeInsets.only(right: 8),
+              child: action,
+            ))
         .toList();
 
     Widget actionWidget;
@@ -122,9 +120,9 @@ class AdaptiveCardElementState extends State<AdaptiveCardElement>
         children: <Widget>[
           Positioned.fill(
               child: Image.network(
-                backgroundImage,
-                fit: BoxFit.cover,
-              )),
+            backgroundImage,
+            fit: BoxFit.cover,
+          )),
           result,
         ],
       );
@@ -217,7 +215,7 @@ class _AdaptiveTextBlockState extends State<AdaptiveTextBlock>
   // Probably want to pass context down the tree, until now -> this
   Color getColor(Brightness brightness) {
     Color color =
-    resolver.resolveColor(adaptiveMap["color"], adaptiveMap["isSubtle"]);
+        resolver.resolveColor(adaptiveMap["color"], adaptiveMap["isSubtle"]);
     if (!widgetState.widget.approximateDarkThemeColors) return color;
     return adjustColorToFitDarkTheme(color, brightness);
   }
@@ -252,9 +250,7 @@ class _AdaptiveTextBlockState extends State<AdaptiveTextBlock>
         fontWeight: fontWeight,
         fontSize: fontSize,
         color: getColor(
-          Theme
-              .of(context)
-              .brightness,
+          Theme.of(context).brightness,
         ));
 
     return MarkdownStyleSheet(
@@ -296,7 +292,7 @@ class _AdaptiveContainerState extends State<AdaptiveContainer>
     }
 
     String colorString = resolver.hostConfig["containerStyles"]
-    [adaptiveMap["style"] ?? "default"]["backgroundColor"];
+        [adaptiveMap["style"] ?? "default"]["backgroundColor"];
 
     backgroundColor = parseColor(colorString);
   }
@@ -310,10 +306,8 @@ class _AdaptiveContainerState extends State<AdaptiveContainer>
         child: SeparatorElement(
           adaptiveMap: adaptiveMap,
           child: Container(
-            color: Theme
-                .of(context)
-                .brightness == Brightness.dark &&
-                adaptiveMap["style"] == null
+            color: Theme.of(context).brightness == Brightness.dark &&
+                    adaptiveMap["style"] == null
                 ? null
                 : backgroundColor,
             child: Padding(
@@ -404,8 +398,8 @@ class _AdaptiveColumnState extends State<AdaptiveColumn>
 
     items = adaptiveMap["items"] != null
         ? List<Map>.from(adaptiveMap["items"]).map((child) {
-      return widgetState.cardRegistry.getElement(child);
-    }).toList()
+            return widgetState.cardRegistry.getElement(child);
+          }).toList()
         : [];
 
     var toParseWidth = adaptiveMap["width"];
@@ -493,11 +487,10 @@ class _AdaptiveFactSetState extends State<AdaptiveFactSet>
         children: [
           Column(
             children: facts
-                .map((fact) =>
-                Text(
-                  fact["title"],
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ))
+                .map((fact) => Text(
+                      fact["title"],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
                 .toList(),
             crossAxisAlignment: CrossAxisAlignment.start,
           ),
@@ -641,7 +634,7 @@ class _AdaptiveImageSetState extends State<AdaptiveImageSet>
           //maxCrossAxisExtent: 200.0,
           children: images
               .map((img) =>
-              SizedBox(width: calculateSize(constraints), child: img))
+                  SizedBox(width: calculateSize(constraints), child: img))
               .toList(),
           //shrinkWrap: true,
         );
@@ -713,7 +706,7 @@ class _AdaptiveMediaState extends State<AdaptiveMedia>
       looping: true,
       autoInitialize: true,
       placeholder:
-      postUrl != null ? Center(child: Image.network(postUrl)) : SizedBox(),
+          postUrl != null ? Center(child: Image.network(postUrl)) : SizedBox(),
       videoPlayerController: videoPlayerController,
     );
   }
@@ -755,7 +748,6 @@ class AdaptiveUnknown extends StatefulWidget with AdaptiveElementWidgetMixin {
 
 class _AdaptiveUnknownState extends State<AdaptiveUnknown>
     with AdaptiveElementMixin {
-
   @override
   Widget build(BuildContext context) {
     Widget result = SizedBox();

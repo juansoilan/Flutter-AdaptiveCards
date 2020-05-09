@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'additional.dart';
-import 'base.dart';
+import 'package:flutter_adaptive_cards/src/elements/additional.dart';
+import 'package:flutter_adaptive_cards/src/elements/base.dart';
 
 // TODO add separator for each
 
@@ -17,7 +16,6 @@ class AdaptiveTextInput extends StatefulWidget with AdaptiveElementWidgetMixin {
 
 class _AdaptiveTextInputState extends State<AdaptiveTextInput>
     with AdaptiveTextualInputMixin, AdaptiveInputMixin, AdaptiveElementMixin {
-
   TextEditingController controller = TextEditingController();
   bool isMultiline;
   int maxLength;
@@ -77,7 +75,6 @@ class _AdaptiveTextInputState extends State<AdaptiveTextInput>
 
 class AdaptiveNumberInput extends StatefulWidget
     with AdaptiveElementWidgetMixin {
-
   AdaptiveNumberInput({Key key, this.adaptiveMap}) : super(key: key);
 
   final Map adaptiveMap;
@@ -88,7 +85,6 @@ class AdaptiveNumberInput extends StatefulWidget
 
 class _AdaptiveNumberInputState extends State<AdaptiveNumberInput>
     with AdaptiveTextualInputMixin, AdaptiveInputMixin, AdaptiveElementMixin {
-
   TextEditingController controller = TextEditingController();
 
   int min;
@@ -142,7 +138,6 @@ class AdaptiveDateInput extends StatefulWidget with AdaptiveElementWidgetMixin {
 
 class _AdaptiveDateInputState extends State<AdaptiveDateInput>
     with AdaptiveTextualInputMixin, AdaptiveElementMixin, AdaptiveInputMixin {
-
   DateTime selectedDateTime;
   DateTime min;
   DateTime max;

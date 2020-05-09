@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_cards/flutter_adaptive_cards.dart';
+import 'package:flutter_adaptive_cards/src/elements/base.dart';
 import 'package:flutter_adaptive_cards/src/elements/basics.dart';
-
-import 'base.dart';
 
 class IconButtonAction extends StatefulWidget with AdaptiveElementWidgetMixin {
   IconButtonAction({Key key, this.adaptiveMap, this.onTapped})
@@ -18,7 +17,6 @@ class IconButtonAction extends StatefulWidget with AdaptiveElementWidgetMixin {
 
 class _IconButtonActionState extends State<IconButtonAction>
     with AdaptiveActionMixin, AdaptiveElementMixin {
-
   String iconUrl;
 
   @override
@@ -115,7 +113,6 @@ class AdaptiveActionSubmit extends StatefulWidget
 
 class _AdaptiveActionSubmitState extends State<AdaptiveActionSubmit>
     with AdaptiveActionMixin, AdaptiveElementMixin {
-
   GenericSubmitAction action;
 
   @override
@@ -141,7 +138,6 @@ class _AdaptiveActionSubmitState extends State<AdaptiveActionSubmit>
 
 class AdaptiveActionOpenUrl extends StatefulWidget
     with AdaptiveElementWidgetMixin {
-
   AdaptiveActionOpenUrl({Key key, this.adaptiveMap}) : super(key: key);
 
   final Map adaptiveMap;
@@ -152,7 +148,6 @@ class AdaptiveActionOpenUrl extends StatefulWidget
 
 class _AdaptiveActionOpenUrlState extends State<AdaptiveActionOpenUrl>
     with AdaptiveActionMixin, AdaptiveElementMixin {
-
   GenericActionOpenUrl action;
   String iconUrl;
 

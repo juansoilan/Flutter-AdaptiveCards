@@ -95,12 +95,10 @@ packages:
   flutter_adaptive_cards:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "18ca7978e6850353327a1bbe68276646c9f7e19c"
-      url: "https://github.com/neohelden/Flutter-AdaptiveCards.git"
-    source: git
-    version: "0.0.3"
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.1"
   flutter_markdown:
     dependency: transitive
     description:
