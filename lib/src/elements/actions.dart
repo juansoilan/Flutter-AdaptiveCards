@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_cards/flutter_adaptive_cards.dart';
 import 'package:flutter_adaptive_cards/src/elements/basics.dart';
+
 import 'base.dart';
 
 class IconButtonAction extends StatefulWidget with AdaptiveElementWidgetMixin {
-
-  IconButtonAction({Key key, this.adaptiveMap, this.onTapped}) : super(key: key);
+  IconButtonAction({Key key, this.adaptiveMap, this.onTapped})
+      : super(key: key);
 
   final Map adaptiveMap;
 
@@ -15,15 +16,15 @@ class IconButtonAction extends StatefulWidget with AdaptiveElementWidgetMixin {
   _IconButtonActionState createState() => _IconButtonActionState();
 }
 
-class _IconButtonActionState extends State<IconButtonAction> with AdaptiveActionMixin, AdaptiveElementMixin{
-
+class _IconButtonActionState extends State<IconButtonAction>
+    with AdaptiveActionMixin, AdaptiveElementMixin {
 
   String iconUrl;
+
   @override
   void initState() {
     super.initState();
     iconUrl = adaptiveMap["iconUrl"];
-
   }
 
   @override
@@ -50,29 +51,23 @@ class _IconButtonActionState extends State<IconButtonAction> with AdaptiveAction
   void onTapped() => widget.onTapped();
 }
 
-
-
-
-class AdaptiveActionShowCard extends StatefulWidget with AdaptiveElementWidgetMixin  {
-
+class AdaptiveActionShowCard extends StatefulWidget
+    with AdaptiveElementWidgetMixin {
   AdaptiveActionShowCard({Key key, this.adaptiveMap}) : super(key: key);
 
   final Map adaptiveMap;
-
 
   @override
   _AdaptiveActionShowCardState createState() => _AdaptiveActionShowCardState();
 }
 
-class _AdaptiveActionShowCardState extends State<AdaptiveActionShowCard> with
-    AdaptiveActionMixin, AdaptiveElementMixin{
-
+class _AdaptiveActionShowCardState extends State<AdaptiveActionShowCard>
+    with AdaptiveActionMixin, AdaptiveElementMixin {
   @override
   void initState() {
     super.initState();
 
     Widget card = widgetState.cardRegistry.getElement(adaptiveMap["card"]);
-
 
     var _adaptiveCardElement = AdaptiveCardElementState.of(context);
     if (_adaptiveCardElement != null) {
@@ -95,7 +90,6 @@ class _AdaptiveActionShowCardState extends State<AdaptiveActionShowCard> with
     );
   }
 
-
   @override
   void onTapped() {
     var _adaptiveCardElement = AdaptiveCardElementState.of(context);
@@ -105,10 +99,10 @@ class _AdaptiveActionShowCardState extends State<AdaptiveActionShowCard> with
   }
 }
 
-
-class AdaptiveActionSubmit extends StatefulWidget with AdaptiveElementWidgetMixin {
-
-  AdaptiveActionSubmit({Key key, this.adaptiveMap, this.color}) : super(key: key);
+class AdaptiveActionSubmit extends StatefulWidget
+    with AdaptiveElementWidgetMixin {
+  AdaptiveActionSubmit({Key key, this.adaptiveMap, this.color})
+      : super(key: key);
 
   final Map adaptiveMap;
 
@@ -119,7 +113,8 @@ class AdaptiveActionSubmit extends StatefulWidget with AdaptiveElementWidgetMixi
   _AdaptiveActionSubmitState createState() => _AdaptiveActionSubmitState();
 }
 
-class _AdaptiveActionSubmitState extends State<AdaptiveActionSubmit> with AdaptiveActionMixin, AdaptiveElementMixin{
+class _AdaptiveActionSubmitState extends State<AdaptiveActionSubmit>
+    with AdaptiveActionMixin, AdaptiveElementMixin {
 
   GenericSubmitAction action;
 
@@ -144,18 +139,19 @@ class _AdaptiveActionSubmitState extends State<AdaptiveActionSubmit> with Adapti
   }
 }
 
-
-class AdaptiveActionOpenUrl extends StatefulWidget with AdaptiveElementWidgetMixin {
+class AdaptiveActionOpenUrl extends StatefulWidget
+    with AdaptiveElementWidgetMixin {
 
   AdaptiveActionOpenUrl({Key key, this.adaptiveMap}) : super(key: key);
 
   final Map adaptiveMap;
+
   @override
   _AdaptiveActionOpenUrlState createState() => _AdaptiveActionOpenUrlState();
 }
 
-class _AdaptiveActionOpenUrlState extends State<AdaptiveActionOpenUrl> with AdaptiveActionMixin, AdaptiveElementMixin{
-
+class _AdaptiveActionOpenUrlState extends State<AdaptiveActionOpenUrl>
+    with AdaptiveActionMixin, AdaptiveElementMixin {
 
   GenericActionOpenUrl action;
   String iconUrl;
@@ -167,6 +163,7 @@ class _AdaptiveActionOpenUrlState extends State<AdaptiveActionOpenUrl> with Adap
     action = GenericActionOpenUrl(adaptiveMap, widgetState);
     iconUrl = adaptiveMap["iconUrl"];
   }
+
   @override
   Widget build(BuildContext context) {
     // TODO
@@ -181,4 +178,3 @@ class _AdaptiveActionOpenUrlState extends State<AdaptiveActionOpenUrl> with Adap
     action.tap();
   }
 }
-

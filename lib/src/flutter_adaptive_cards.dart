@@ -1,13 +1,12 @@
 library flutter_adaptive_cards;
 
 import 'dart:async';
-import 'package:flutter_adaptive_cards/src/action_handler.dart';
-import 'package:flutter_adaptive_cards/src/registry.dart';
-import 'package:uuid/uuid.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_adaptive_cards/src/elements/input.dart';
+import 'package:flutter_adaptive_cards/src/action_handler.dart';
+import 'package:flutter_adaptive_cards/src/registry.dart';
 import 'package:flutter_adaptive_cards/src/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -28,9 +27,10 @@ abstract class AdaptiveCardContentProvider {
 }
 
 class MemoryAdaptiveCardContentProvider extends AdaptiveCardContentProvider {
-  MemoryAdaptiveCardContentProvider(
-      {@required this.content, @required String hostConfigPath})
-      : super(hostConfigPath: hostConfigPath);
+  MemoryAdaptiveCardContentProvider({
+    @required this.content,
+    @required String hostConfigPath,
+  }) : super(hostConfigPath: hostConfigPath);
 
   Map content;
 
@@ -41,9 +41,10 @@ class MemoryAdaptiveCardContentProvider extends AdaptiveCardContentProvider {
 }
 
 class AssetAdaptiveCardContentProvider extends AdaptiveCardContentProvider {
-  AssetAdaptiveCardContentProvider(
-      {@required this.path, @required String hostConfigPath})
-      : super(hostConfigPath: hostConfigPath);
+  AssetAdaptiveCardContentProvider({
+    @required this.path,
+    @required String hostConfigPath,
+  }) : super(hostConfigPath: hostConfigPath);
 
   String path;
 
@@ -54,9 +55,10 @@ class AssetAdaptiveCardContentProvider extends AdaptiveCardContentProvider {
 }
 
 class NetworkAdaptiveCardContentProvider extends AdaptiveCardContentProvider {
-  NetworkAdaptiveCardContentProvider(
-      {@required this.url, @required String hostConfigPath})
-      : super(hostConfigPath: hostConfigPath);
+  NetworkAdaptiveCardContentProvider({
+    @required this.url,
+    @required String hostConfigPath,
+  }) : super(hostConfigPath: hostConfigPath);
 
   String url;
 
@@ -67,7 +69,6 @@ class NetworkAdaptiveCardContentProvider extends AdaptiveCardContentProvider {
 }
 
 class AdaptiveCard extends StatefulWidget {
-
   AdaptiveCard({
     Key key,
     @required this.adaptiveCardContentProvider,
@@ -90,7 +91,9 @@ class AdaptiveCard extends StatefulWidget {
     this.showDebugJson = true,
     this.approximateDarkThemeColors = true,
   }) : adaptiveCardContentProvider = NetworkAdaptiveCardContentProvider(
-            url: url, hostConfigPath: hostConfigPath);
+          url: url,
+          hostConfigPath: hostConfigPath,
+        );
 
   AdaptiveCard.asset({
     Key key,
@@ -103,7 +106,9 @@ class AdaptiveCard extends StatefulWidget {
     this.showDebugJson = true,
     this.approximateDarkThemeColors = true,
   }) : adaptiveCardContentProvider = AssetAdaptiveCardContentProvider(
-            path: assetPath, hostConfigPath: hostConfigPath);
+          path: assetPath,
+          hostConfigPath: hostConfigPath,
+        );
 
   AdaptiveCard.memory({
     Key key,
@@ -116,7 +121,9 @@ class AdaptiveCard extends StatefulWidget {
     this.showDebugJson = true,
     this.approximateDarkThemeColors = true,
   }) : adaptiveCardContentProvider = MemoryAdaptiveCardContentProvider(
-            content: content, hostConfigPath: hostConfigPath);
+          content: content,
+          hostConfigPath: hostConfigPath,
+        );
 
   final AdaptiveCardContentProvider adaptiveCardContentProvider;
 
@@ -134,7 +141,6 @@ class AdaptiveCard extends StatefulWidget {
 }
 
 class _AdaptiveCardState extends State<AdaptiveCard> {
-
   Map map;
   Map hostConfig;
 
@@ -143,13 +149,12 @@ class _AdaptiveCardState extends State<AdaptiveCard> {
   Function(Map map) onSubmit;
   Function(String url) onOpenUrl;
 
-
   @override
   void initState() {
     super.initState();
     widget.adaptiveCardContentProvider.loadHostConfig().then((hostConfigMap) {
       setState(() {
-        if(mounted) {
+        if (mounted) {
           hostConfig = hostConfigMap;
         }
       });
@@ -158,7 +163,7 @@ class _AdaptiveCardState extends State<AdaptiveCard> {
         .loadAdaptiveCardContent()
         .then((adaptiveMap) {
       setState(() {
-        if(mounted) {
+        if (mounted) {
           map = adaptiveMap;
         }
       });
@@ -168,46 +173,46 @@ class _AdaptiveCardState extends State<AdaptiveCard> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if(widget.cardRegistry != null) {
+    if (widget.cardRegistry != null) {
       cardRegistry = widget.cardRegistry;
     } else {
       CardRegistry cardRegistry = DefaultCardRegistry.of(context);
-      if(cardRegistry != null) {
+      if (cardRegistry != null) {
         this.cardRegistry = cardRegistry;
       } else {
         this.cardRegistry = const CardRegistry();
       }
     }
 
-
-    if(widget.onSubmit != null) {
+    if (widget.onSubmit != null) {
       onSubmit = widget.onSubmit;
     } else {
       var foundOnSubmit = DefaultAdaptiveCardHandlers.of(context)?.onSubmit;
-      if(foundOnSubmit != null) {
+      if (foundOnSubmit != null) {
         onSubmit = foundOnSubmit;
       } else {
         onSubmit = (it) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("No handler found for: \n" + it.toString())));
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text("No handler found for: \n" + it.toString())),
+          );
         };
       }
     }
 
-    if(widget.onOpenUrl != null) {
+    if (widget.onOpenUrl != null) {
       onOpenUrl = widget.onOpenUrl;
     } else {
       var foundOpenUrl = DefaultAdaptiveCardHandlers.of(context)?.onOpenUrl;
-      if(foundOpenUrl  != null) {
+      if (foundOpenUrl != null) {
         onOpenUrl = foundOpenUrl;
       } else {
         onOpenUrl = (it) {
-          Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text("No handler found for: \n" + it.toString())));
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text("No handler found for: \n" + it.toString())),
+          );
         };
       }
     }
-
   }
 
   @override
@@ -217,7 +222,9 @@ class _AdaptiveCardState extends State<AdaptiveCard> {
     }
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: RawAdaptiveCard.fromMap(map, hostConfig,
+      child: RawAdaptiveCard.fromMap(
+        map,
+        hostConfig,
         cardRegistry: cardRegistry,
         onOpenUrl: onOpenUrl,
         onSubmit: onSubmit,
@@ -228,15 +235,15 @@ class _AdaptiveCardState extends State<AdaptiveCard> {
   }
 }
 
-
-
 /// Main entry point to adaptive cards.
 ///
 /// This widget takes a [map] (which usually is just a json decoded string) and
 /// displays in natively. Additionally a host config needs to be provided for
 /// styling.
 class RawAdaptiveCard extends StatefulWidget {
-  RawAdaptiveCard.fromMap(this.map, this.hostConfig, {
+  RawAdaptiveCard.fromMap(
+    this.map,
+    this.hostConfig, {
     this.cardRegistry = const CardRegistry(),
     @required this.onSubmit,
     @required this.onOpenUrl,
@@ -267,10 +274,10 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
   // The root element
   Widget _adaptiveElement;
 
-
   static RawAdaptiveCardState of(BuildContext context) {
     return Provider.of<RawAdaptiveCardState>(context);
   }
+
   @override
   void initState() {
     super.initState();
@@ -280,8 +287,7 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
     idGenerator = UUIDGenerator();
     cardRegistry = widget.cardRegistry;
 
-    _adaptiveElement =
-        widget.cardRegistry.getElement(widget.map);
+    _adaptiveElement = widget.cardRegistry.getElement(widget.map);
   }
 
   /// Every widget can access method of this class, meaning setting the state
@@ -290,17 +296,13 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
     setState(() {});
   }
 
-
-
   /// Submits all the inputs of this adaptive card, does it by recursively
   /// visiting the elements in the tree
   void submit(Map map) {
-
-
     var visitor;
     visitor = (element) {
-      if(element is StatefulElement) {
-        if(element.state is AdaptiveInputMixin) {
+      if (element is StatefulElement) {
+        if (element.state is AdaptiveInputMixin) {
           (element.state as AdaptiveInputMixin).appendInput(map);
         }
       }
@@ -339,7 +341,7 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
     Widget child = _adaptiveElement;
 
     assert(() {
-      if(widget.showDebugJson) {
+      if (widget.showDebugJson) {
         child = Column(
           children: <Widget>[
             FlatButton(
@@ -347,26 +349,32 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
               onPressed: () {
                 JsonEncoder encoder = new JsonEncoder.withIndent('  ');
                 String prettyprint = encoder.convert(widget.map);
-                showDialog(context: context, builder: (context) {
-                  return AlertDialog(
-                    title: Text("JSON (only added in debug mode, you can also turn"
-                        "it of manually by passing showDebugJson = false)"),
-                    content: SingleChildScrollView(child: Text(prettyprint)),
-                    actions: <Widget>[
-                      Center(
-                        child: FlatButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text("Thanks"),
-                        ),
-                      )
-                    ],
-                    contentPadding: EdgeInsets.all(8.0),
-                  );
-                });
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text(
+                            "JSON (only added in debug mode, you can also turn"
+                            "it of manually by passing showDebugJson = false)"),
+                        content:
+                            SingleChildScrollView(child: Text(prettyprint)),
+                        actions: <Widget>[
+                          Center(
+                            child: FlatButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text("Thanks"),
+                            ),
+                          )
+                        ],
+                        contentPadding: EdgeInsets.all(8.0),
+                      );
+                    });
               },
               child: Text("Debug show the JSON"),
             ),
-            Divider(height: 0,),
+            Divider(
+              height: 0,
+            ),
             child,
           ],
         );
@@ -419,9 +427,7 @@ typedef AdaptiveElementVisitor = void Function(AdaptiveElement element);
 /// implement the method [visitChildren] and call visitor(this) in addition call
 /// [visitChildren] on each child with the passed visitor.
 abstract class AdaptiveElement {
-  AdaptiveElement(
-      {@required this.adaptiveMap,
-      @required this.widgetState}) {
+  AdaptiveElement({@required this.adaptiveMap, @required this.widgetState}) {
     loadTree();
   }
 
@@ -491,8 +497,6 @@ abstract class AdaptiveElement {
   int get hashCode => id.hashCode;
 }
 
-
-
 /// Resolves values based on the host config.
 ///
 /// All values can also be null, in that case the default is used
@@ -500,20 +504,21 @@ class ReferenceResolver {
   ReferenceResolver({
     this.hostConfig,
     this.currentStyle,
-});
+  });
 
   final Map hostConfig;
 
   final String currentStyle;
 
   dynamic resolve(String key, String value) {
-    dynamic res =  hostConfig[key][firstCharacterToLowerCase(value)];
-    assert(res != null, "Could not find hostConfig[$key][${firstCharacterToLowerCase(value)}]");
+    dynamic res = hostConfig[key][firstCharacterToLowerCase(value)];
+    assert(res != null,
+        "Could not find hostConfig[$key][${firstCharacterToLowerCase(value)}]");
     return res;
   }
 
   dynamic get(String key) {
-    dynamic res =  hostConfig[key];
+    dynamic res = hostConfig[key];
     assert(res != null, "Could not find hostConfig[$key]");
     return res;
   }
@@ -558,12 +563,10 @@ class ReferenceResolver {
     String subtleOrDefault = isSubtle ?? false ? "subtle" : "default";
     final style = currentStyle ?? "default";
     // Make it case insensitive
-    String colorValue = hostConfig["containerStyles"][style]
-            ["foregroundColors"][firstCharacterToLowerCase(myColor)]
-        [subtleOrDefault];
+    String colorValue = hostConfig["containerStyles"][style]["foregroundColors"]
+        [firstCharacterToLowerCase(myColor)][subtleOrDefault];
     return parseColor(colorValue);
   }
-
 
   ReferenceResolver copyWith({String style}) {
     assert(style == null || style == "default" || style == "emphasis");
@@ -577,13 +580,10 @@ class ReferenceResolver {
   double resolveSpacing(String spacing) {
     String mySpacing = spacing ?? "default";
     if (mySpacing == "none") return 0.0;
-    int intSpacing = hostConfig["spacing"][firstCharacterToLowerCase(mySpacing)];
-    assert(intSpacing != null, "hostConfig[\"spacing\"][\"${firstCharacterToLowerCase(mySpacing)}\"] was null");
+    int intSpacing =
+        hostConfig["spacing"][firstCharacterToLowerCase(mySpacing)];
+    assert(intSpacing != null,
+        "hostConfig[\"spacing\"][\"${firstCharacterToLowerCase(mySpacing)}\"] was null");
     return intSpacing.toDouble();
   }
 }
-
-
-
-
-

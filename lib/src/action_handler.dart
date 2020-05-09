@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DefaultAdaptiveCardHandlers extends InheritedWidget {
-  DefaultAdaptiveCardHandlers ({
+  DefaultAdaptiveCardHandlers({
     Key key,
     @required this.onSubmit,
     @required this.onOpenUrl,
@@ -12,10 +12,14 @@ class DefaultAdaptiveCardHandlers extends InheritedWidget {
   final Function(String url) onOpenUrl;
 
   static DefaultAdaptiveCardHandlers of(BuildContext context) {
-    DefaultAdaptiveCardHandlers handlers = context.inheritFromWidgetOfExactType(DefaultAdaptiveCardHandlers);
-    if(handlers == null) return null;
+    DefaultAdaptiveCardHandlers handlers =
+        context.inheritFromWidgetOfExactType(DefaultAdaptiveCardHandlers);
+
+    if (handlers == null) return null;
     return handlers;
   }
+
   @override
-  bool updateShouldNotify(DefaultAdaptiveCardHandlers oldWidget) => oldWidget != this;
+  bool updateShouldNotify(DefaultAdaptiveCardHandlers oldWidget) =>
+      oldWidget != this;
 }

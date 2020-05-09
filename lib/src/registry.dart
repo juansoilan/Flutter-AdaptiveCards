@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_adaptive_cards/src/elements/basics.dart';
 import 'package:flutter_adaptive_cards/src/elements/actions.dart';
+import 'package:flutter_adaptive_cards/src/elements/basics.dart';
 import 'package:flutter_adaptive_cards/src/elements/input.dart';
 import 'package:flutter_adaptive_cards/src/flutter_adaptive_cards.dart';
 
 import 'elements/base.dart';
 
-typedef ElementCreator = Widget Function(
-    Map<String, dynamic> map);
+typedef ElementCreator = Widget Function(Map<String, dynamic> map);
 
 /// Entry point for registering adaptive cards
 ///
@@ -24,10 +23,11 @@ typedef ElementCreator = Widget Function(
 /// Delete an element even if you have provided it yourself via the [addedElements]
 ///
 class CardRegistry {
-  const CardRegistry(
-      {this.removedElements = const [],
-      this.addedElements = const {},
-      this.addedActions = const {}});
+  const CardRegistry({
+    this.removedElements = const [],
+    this.addedElements = const {},
+    this.addedActions = const {},
+  });
 
   /// Provide custom elements to use.
   /// When providing an element which is already defined, it is overwritten
@@ -38,15 +38,14 @@ class CardRegistry {
   /// Remove specific elements from the list
   final List<String> removedElements;
 
-  Widget getElement(
-      Map<String, dynamic> map) {
+  Widget getElement(Map<String, dynamic> map) {
     String stringType = map["type"];
 
     if (removedElements.contains(stringType))
-    return AdaptiveUnknown(
-      type: stringType,
-      adaptiveMap: map,
-    );
+      return AdaptiveUnknown(
+        type: stringType,
+        adaptiveMap: map,
+      );
 
     if (addedElements.containsKey(stringType)) {
       return addedElements[stringType](map);
@@ -55,15 +54,17 @@ class CardRegistry {
     }
   }
 
-  GenericAction getGenericAction(Map<String, dynamic> map, RawAdaptiveCardState state) {
+  GenericAction getGenericAction(
+      Map<String, dynamic> map, RawAdaptiveCardState state) {
     String stringType = map["type"];
 
     switch (stringType) {
       case "Action.ShowCard":
-        assert(false, "Action.ShowCard can only be used directly by the root card");
+        assert(false,
+            "Action.ShowCard can only be used directly by the root card");
         return null;
       case "Action.OpenUrl":
-        return GenericActionOpenUrl(map,state);
+        return GenericActionOpenUrl(map, state);
       case "Action.Submit":
         return GenericSubmitAction(map, state);
     }
@@ -71,9 +72,7 @@ class CardRegistry {
     return null;
   }
 
-
-  Widget getAction(
-      Map<String, dynamic> map) {
+  Widget getAction(Map<String, dynamic> map) {
     String stringType = map["type"];
 
     if (removedElements.contains(stringType))
@@ -92,25 +91,24 @@ class CardRegistry {
   /// This returns an [AdaptiveElement] with the correct type.
   ///
   /// It looks at the [type] property and decides which object to construct
-  Widget _getBaseElement(
-      Map<String, dynamic> map) {
+  Widget _getBaseElement(Map<String, dynamic> map) {
     String stringType = map["type"];
 
     switch (stringType) {
       case "Media":
         return AdaptiveMedia(adaptiveMap: map);
       case "Container":
-        return AdaptiveContainer(adaptiveMap: map,);
+        return AdaptiveContainer(adaptiveMap: map);
       case "TextBlock":
-        return AdaptiveTextBlock(adaptiveMap: map,);
+        return AdaptiveTextBlock(adaptiveMap: map);
       case "AdaptiveCard":
-        return AdaptiveCardElement(adaptiveMap: map,);
+        return AdaptiveCardElement(adaptiveMap: map);
       case "ColumnSet":
-        return AdaptiveColumnSet(adaptiveMap: map,);
+        return AdaptiveColumnSet(adaptiveMap: map);
       case "Image":
-        return AdaptiveImage(adaptiveMap: map,);
+        return AdaptiveImage(adaptiveMap: map);
       case "FactSet":
-        return AdaptiveFactSet(adaptiveMap: map,);
+        return AdaptiveFactSet(adaptiveMap: map);
       case "ImageSet":
         return AdaptiveImageSet(adaptiveMap: map);
       case "Input.Text":
@@ -118,30 +116,29 @@ class CardRegistry {
       case "Input.Number":
         return AdaptiveNumberInput(adaptiveMap: map);
       case "Input.Date":
-        return AdaptiveDateInput(adaptiveMap: map,);
+        return AdaptiveDateInput(adaptiveMap: map);
       case "Input.Time":
-        return AdaptiveTimeInput(adaptiveMap: map,);
+        return AdaptiveTimeInput(adaptiveMap: map);
       case "Input.Toggle":
-        return AdaptiveToggle(adaptiveMap: map,);
+        return AdaptiveToggle(adaptiveMap: map);
       case "Input.ChoiceSet":
-        return AdaptiveChoiceSet(adaptiveMap: map,);
+        return AdaptiveChoiceSet(adaptiveMap: map);
     }
-    return AdaptiveUnknown(adaptiveMap: map, type: stringType,);
+    return AdaptiveUnknown(adaptiveMap: map, type: stringType);
   }
 
-  Widget _getBaseAction(
-      Map<String, dynamic> map,) {
+  Widget _getBaseAction(Map<String, dynamic> map) {
     String stringType = map["type"];
 
     switch (stringType) {
       case "Action.ShowCard":
-        return AdaptiveActionShowCard(adaptiveMap: map,);
+        return AdaptiveActionShowCard(adaptiveMap: map);
       case "Action.OpenUrl":
-        return AdaptiveActionOpenUrl(adaptiveMap: map,);
+        return AdaptiveActionOpenUrl(adaptiveMap: map);
       case "Action.Submit":
-        return AdaptiveActionSubmit(adaptiveMap: map,);
+        return AdaptiveActionSubmit(adaptiveMap: map);
     }
-    return AdaptiveUnknown(adaptiveMap: map, type: stringType,);
+    return AdaptiveUnknown(adaptiveMap: map, type: stringType);
   }
 }
 
@@ -155,10 +152,12 @@ class DefaultCardRegistry extends InheritedWidget {
   final CardRegistry cardRegistry;
 
   static CardRegistry of(BuildContext context) {
-    DefaultCardRegistry cardRegistry = context.inheritFromWidgetOfExactType(DefaultCardRegistry);
-    if(cardRegistry == null) return null;
+    DefaultCardRegistry cardRegistry =
+        context.inheritFromWidgetOfExactType(DefaultCardRegistry);
+    if (cardRegistry == null) return null;
     return cardRegistry.cardRegistry;
   }
+
   @override
   bool updateShouldNotify(DefaultCardRegistry oldWidget) => oldWidget != this;
 }
