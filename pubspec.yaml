@@ -21,7 +21,7 @@ dependencies:
   intl: any
   tinycolor: ^1.0.2
   provider: ^3.1.0+1
-  flutter_markdown: ^0.3.2
+  flutter_markdown: ^0.3.5
 
 dev_dependencies:
   flutter_test:

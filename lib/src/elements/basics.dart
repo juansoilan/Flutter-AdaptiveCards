@@ -173,16 +173,6 @@ class _AdaptiveTextBlockState extends State<AdaptiveTextBlock>
     text = parseTextString(adaptiveMap['text']);
   }
 
-  /*child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: fontWeight,
-              fontSize: fontSize,
-              color: getColor(Theme.of(context).brightness),
-            ),
-            maxLines: maxLines,
-          )*/
-
   // TODO create own widget that parses _basic_ markdown.
   // This might help: https://docs.flutter.io/flutter/widgets/Wrap-class.html
   @override
@@ -190,9 +180,19 @@ class _AdaptiveTextBlockState extends State<AdaptiveTextBlock>
     return SeparatorElement(
       adaptiveMap: adaptiveMap,
       child: Align(
-        // TODO IntrinsicWidth finxed a few things, but breaks more
+        // TODO IntrinsicWidth fixed a few things, but breaks more
         alignment: horizontalAlignment,
-        child: MarkdownBody(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: fontWeight,
+            fontSize: fontSize,
+            color: getColor(Theme.of(context).brightness),
+          ),
+          maxLines: maxLines,
+        ),
+        /*child: MarkdownBody(
+          // TODO the markdown library doesn't support IntrinsicHeight https://github.com/flutter/flutter/issues/48679
           // TODO the markdown library does currently not support max lines
           // As markdown support is more important than maxLines right now
           // this is in here.
@@ -202,7 +202,7 @@ class _AdaptiveTextBlockState extends State<AdaptiveTextBlock>
           onTapLink: (href) {
             RawAdaptiveCardState.of(context).openUrl(href);
           },
-        ),
+        ),*/
       ),
     );
   }
@@ -350,11 +350,13 @@ class _AdaptiveColumnSetState extends State<AdaptiveColumnSet>
       adaptiveMap: adaptiveMap,
       child: AdaptiveTappable(
         adaptiveMap: adaptiveMap,
-        child: Row(
-          children: columns.toList(),
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+        child: IntrinsicHeight(
+          child: Row(
+            children: columns.toList(),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+          ),
         ),
       ),
     );
@@ -377,6 +379,8 @@ class _AdaptiveColumnState extends State<AdaptiveColumn>
   /// Can be "auto", "stretch" or "manual"
   String mode;
   int width;
+  MainAxisAlignment mainAxisAlignment;
+  CrossAxisAlignment crossAxisAlignment;
 
   GenericAction action;
 
@@ -423,6 +427,39 @@ class _AdaptiveColumnState extends State<AdaptiveColumn>
     } else {
       mode = "auto";
     }
+
+    mainAxisAlignment = loadMainAxisAlignment();
+    crossAxisAlignment = loadCrossAxisAlignment();
+  }
+
+  MainAxisAlignment loadMainAxisAlignment() {
+    String verticalAlignment = adaptiveMap["verticalContentAlignment"] ?? "Top";
+
+    switch (verticalAlignment) {
+      case "Top":
+        return MainAxisAlignment.start;
+      case "Center":
+        return MainAxisAlignment.center;
+      case "Bottom":
+        return MainAxisAlignment.end;
+      default:
+        return MainAxisAlignment.start;
+    }
+  }
+
+  CrossAxisAlignment loadCrossAxisAlignment() {
+    String horizontalAlignment = adaptiveMap["horizontalAlignment"] ?? "Left";
+
+    switch (horizontalAlignment) {
+      case "Left":
+        return CrossAxisAlignment.start;
+      case "Center":
+        return CrossAxisAlignment.center;
+      case "Right":
+        return CrossAxisAlignment.end;
+      default:
+        return CrossAxisAlignment.start;
+    }
   }
 
   @override
@@ -433,11 +470,10 @@ class _AdaptiveColumnState extends State<AdaptiveColumn>
         padding: EdgeInsets.only(left: precedingSpacing),
         child: Column(
           children: []
-            ..add(
-              separator ? Divider() : SizedBox(),
-            )
+            ..add(separator ? Divider() : SizedBox())
             ..addAll(items.map((it) => it).toList()),
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: mainAxisAlignment,
+          crossAxisAlignment: crossAxisAlignment,
         ),
       ),
     );

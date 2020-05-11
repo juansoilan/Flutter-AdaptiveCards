@@ -30,8 +30,7 @@
                         {
                             "type": "Image",
                             "url": "http://adaptivecards.io/content/cats/1.png",
-                            "size": "Small",
-                            "horizontalAlignment": "Center"
+                            "size": "Small"
                         }
                     ],
                     "width": "stretch",
@@ -44,12 +43,12 @@
                         {
                             "type": "Image",
                             "url": "http://adaptivecards.io/content/cats/1.png",
-                            "size": "Small",
-                            "horizontalAlignment": "Right"
+                            "size": "Small"
                         }
                     ],
                     "width": "stretch",
-                    "verticalContentAlignment": "Bottom"
+                    "verticalContentAlignment": "Bottom",
+                    "horizontalAlignment": "Right"
                 },
                 {
                     "type": "Column",
