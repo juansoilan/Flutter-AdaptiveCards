@@ -126,7 +126,8 @@ class AdaptiveCard extends StatefulWidget {
     this.approximateDarkThemeColors = true,
     this.supportMarkdown = true,
   }) : adaptiveCardContentProvider =
-            MemoryAdaptiveCardContentProvider(content: content, hostConfigPath: hostConfigPath, hostConfig: hostConfig);
+            MemoryAdaptiveCardContentProvider(content: content, hostConfigPath: hostConfigPath, hostConfig: hostConfig),
+        super(key: key);
 
   final AdaptiveCardContentProvider adaptiveCardContentProvider;
 
