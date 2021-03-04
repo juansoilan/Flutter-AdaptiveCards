@@ -10,7 +10,7 @@ import 'package:mockito/mockito.dart';
 
 class MockAdaptiveCardState extends Mock implements RawAdaptiveCardState {
   @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.debug}) {
+  String toString({DiagnosticLevel minLevel =  DiagnosticLevel.info}) {
     return "";
   }
 }
