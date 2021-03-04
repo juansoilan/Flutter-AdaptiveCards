@@ -53,8 +53,8 @@ class _AdaptiveMediaState extends State<AdaptiveMedia>
 
   @override
   void dispose() {
-    videoPlayerController.dispose();
-    controller.dispose();
+    videoPlayerController?.dispose();
+    controller?.dispose();
     super.dispose();
   }
 

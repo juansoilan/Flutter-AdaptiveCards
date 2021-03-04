@@ -24,13 +24,13 @@ class _IconButtonActionState extends State<IconButtonAction> with AdaptiveAction
 
   @override
   Widget build(BuildContext context) {
-    Widget result = RaisedButton(
+    Widget result = ElevatedButton(
       onPressed: onTapped,
       child: Text(title),
     );
 
     if (iconUrl != null) {
-      result = RaisedButton.icon(
+      result = ElevatedButton.icon(
         onPressed: onTapped,
         icon: Image.network(
           iconUrl,

@@ -342,7 +342,7 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
   }
 
   void showError(String message) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
   /// min and max dates may be null, in this case no constraint is made in that direction
@@ -368,8 +368,8 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
       if (widget.showDebugJson) {
         child = Column(
           children: <Widget>[
-            FlatButton(
-              textColor: Colors.indigo,
+            TextButton(
+              style: TextButton.styleFrom(primary: Colors.indigo),
               onPressed: () {
                 JsonEncoder encoder = new JsonEncoder.withIndent('  ');
                 String prettyprint = encoder.convert(widget.map);
@@ -382,7 +382,7 @@ class RawAdaptiveCardState extends State<RawAdaptiveCard> {
                         content: SingleChildScrollView(child: Text(prettyprint)),
                         actions: <Widget>[
                           Center(
-                            child: FlatButton(
+                            child: TextButton(
                               onPressed: () => Navigator.of(context).pop(),
                               child: Text("Thanks"),
                             ),

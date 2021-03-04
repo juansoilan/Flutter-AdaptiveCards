@@ -63,8 +63,8 @@ class _DemoAdaptiveCardState extends State<DemoAdaptiveCard> with AutomaticKeepA
             approximateDarkThemeColors: widget.approximateDarkThemeColors,
             supportMarkdown: widget.supportMarkdown,
           ),
-          FlatButton(
-            textColor: Colors.indigo,
+          TextButton(
+            style: TextButton.styleFrom(primary: Colors.indigo),
             onPressed: () {
               showDialog(
                   context: context,
@@ -74,7 +74,7 @@ class _DemoAdaptiveCardState extends State<DemoAdaptiveCard> with AutomaticKeepA
                       content: SingleChildScrollView(child: Text(jsonFile)),
                       actions: <Widget>[
                         Center(
-                          child: FlatButton(
+                          child: TextButton(
                             onPressed: () => Navigator.of(context).pop(),
                             child: Text("Thanks"),
                           ),

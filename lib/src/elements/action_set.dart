@@ -15,7 +15,7 @@ class ActionSet extends StatefulWidget with AdaptiveElementWidgetMixin {
 }
 
 class _ActionSetState extends State<ActionSet> with AdaptiveElementMixin {
-  List<Widget> actions = List();
+  List<Widget> actions = [];
 
   @override
   void initState() {

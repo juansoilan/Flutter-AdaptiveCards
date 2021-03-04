@@ -25,8 +25,10 @@ class _AdaptiveActionSubmitState extends State<AdaptiveActionSubmit> with Adapti
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      color: widget.color,
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: widget.color,
+      ),
       onPressed: onTapped,
       child: Text(title, textAlign: TextAlign.center),
     );

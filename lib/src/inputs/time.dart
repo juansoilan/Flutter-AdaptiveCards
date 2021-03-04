@@ -41,7 +41,7 @@ class _AdaptiveTimeInputState extends State<AdaptiveTimeInput>
   Widget build(BuildContext context) {
     return SeparatorElement(
       adaptiveMap: adaptiveMap,
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: () async {
           TimeOfDay result = await widgetState.pickTime();
           if (result.hour >= min.hour && result.hour <= max.hour) {

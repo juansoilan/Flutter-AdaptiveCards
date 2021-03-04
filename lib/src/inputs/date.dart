@@ -33,7 +33,7 @@ class _AdaptiveDateInputState extends State<AdaptiveDateInput>
   Widget build(BuildContext context) {
     return SeparatorElement(
       adaptiveMap: adaptiveMap,
-      child: RaisedButton(
+      child: ElevatedButton(
         onPressed: () async {
           selectedDateTime = await widgetState.pickDate(min, max);
           setState(() {});

@@ -29,7 +29,7 @@ class _AdaptiveActionShowCardState extends State<AdaptiveActionShowCard>
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return ElevatedButton(
       onPressed: onTapped,
       child: Row(
         mainAxisSize: MainAxisSize.min,
