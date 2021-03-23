@@ -1,14 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_cards/src/additional.dart';
 import 'package:flutter_adaptive_cards/src/base.dart';
 import 'package:flutter_adaptive_cards/src/utils.dart';
 
 class AdaptiveImage extends StatefulWidget with AdaptiveElementWidgetMixin {
-  AdaptiveImage({Key key, this.adaptiveMap, this.parentMode = "stretch", this.supportMarkdown}) : super(key: key);
-
   final Map adaptiveMap;
+
   final String parentMode;
   final bool supportMarkdown;
+  AdaptiveImage({Key key, this.adaptiveMap, this.parentMode = "stretch", this.supportMarkdown}) : super(key: key);
 
   @override
   _AdaptiveImageState createState() => _AdaptiveImageState();
@@ -19,18 +21,18 @@ class _AdaptiveImageState extends State<AdaptiveImage> with AdaptiveElementMixin
   bool isPerson;
   double width;
   double height;
+  String base64Prefix = 'data:image/png;base64,';
 
-  @override
-  void initState() {
-    super.initState();
-    horizontalAlignment = loadAlignment();
-    isPerson = loadIsPerson();
-    loadSize();
-  }
+  String get url => adaptiveMap["url"];
 
   @override
   Widget build(BuildContext context) {
     //TODO alt text
+
+    if (isPerson) {
+      width = 80;
+      height = 80;
+    }
 
     BoxFit fit = BoxFit.contain;
     if (height != null && width != null) {
@@ -40,7 +42,9 @@ class _AdaptiveImageState extends State<AdaptiveImage> with AdaptiveElementMixin
     Widget image = AdaptiveTappable(
       adaptiveMap: adaptiveMap,
       child: Image(
-        image: NetworkImage(url),
+        image: url.contains(base64Prefix)
+            ? MemoryImage(base64Decode(url.replaceFirst(base64Prefix, '')))
+            : NetworkImage(url),
         fit: fit,
         width: width,
         height: height,
@@ -78,6 +82,14 @@ class _AdaptiveImageState extends State<AdaptiveImage> with AdaptiveElementMixin
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    horizontalAlignment = loadAlignment();
+    isPerson = loadIsPerson();
+    loadSize();
+  }
+
   Alignment loadAlignment() {
     String alignmentString = adaptiveMap["horizontalAlignment"]?.toLowerCase() ?? "left";
     switch (alignmentString) {
@@ -96,8 +108,6 @@ class _AdaptiveImageState extends State<AdaptiveImage> with AdaptiveElementMixin
     if (adaptiveMap["style"] == null || adaptiveMap["style"] == "default") return false;
     return true;
   }
-
-  String get url => adaptiveMap["url"];
 
   void loadSize() {
     String sizeDescription = adaptiveMap["size"] ?? "auto";
