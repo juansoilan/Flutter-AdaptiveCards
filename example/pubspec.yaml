@@ -17,7 +17,7 @@ dependencies:
       ref: d4e2e04ffab14ea315b9a34a32cd8ac5ee21c763
 
   url_launcher: ^5.4.7
-  http: ^0.12.0
+  http: ^0.13.0
 
   flutter_adaptive_cards:
     path: ..
